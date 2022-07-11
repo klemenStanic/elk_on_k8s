@@ -2,10 +2,32 @@
 This repo contains the steps needed to deploy a basic ELK stack on a Kubernetes cluster (using minikube). A log emmiting pod is also deployed, which ships system resource logs to Logstash, using Filebeats. 
 
 To deploy a local cluster, we are using minikube. Install it by following the instructions at [Minikube](https://minikube.sigs.k8s.io/docs/start/). 
+If you are using x86_64 Linux, you can run:
+```
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+```
 
-You also need to install [Docker](https://docs.docker.com/get-docker/).
+You also need to install [Docker](https://docs.docker.com/get-docker/). On Linux Ubuntu, run:
+```
+sudo apt update
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+sudo apt install docker-ce
+```
 
-Start by running the minikube cluster with a bit more resources than default:
+Check if Docker is running:
+```
+sudo systemctl status docker
+```
+
+Then, you need to add the current user (which has sudo permissions) to the ```docker``` group:
+```
+sudo usermod -aG docker $USER && newgrp docker
+```
+
+Then, run the minikube cluster with a bit more resources than default:
 ```
 minikube start --cpus 4 --memory 6144 --driver=docker
 ```
